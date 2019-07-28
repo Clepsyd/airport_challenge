@@ -1,16 +1,23 @@
-describe WeatherUpdate do
+require 'Better_weather/weather_update'
+
+class WeatherUpdate_container
+  include WeatherUpdate
+end
+
+describe WeatherUpdate_container do
 
   it { is_expected.to respond_to(:current,
                                  :update,
                                  :fetch)
   }
 
-  let(:json_double) { '{"weather": [{"id": 500, "main": "Rain"}]' }
+  let(:json_double) { '{"weather": [{"id": 500, "main": "Rain"}]}' }
+  let(:location) { "London" }
 
   describe "#fetch" do
 
     it "returns a string" do
-      expect(WeatherUpdate.fetch).to be_a(String)
+      expect(subject.fetch).to be_a(String)
     end
 
   end
@@ -18,8 +25,8 @@ describe WeatherUpdate do
   describe "#parse" do
 
     it "returns an id/weather pair" do
-      allow(WeatherUpdate).to receive(:fetch).and_return(json_double)
-      expect(WeatherUpdate.parse).to eq({id: 500, main: "Rain"})
+      allow(subject).to receive(:fetch).and_return(json_double)
+      expect(subject.parse).to eq({id: 500, main: "Rain"})
     end
 
   end
@@ -27,10 +34,12 @@ describe WeatherUpdate do
   describe "#update" do
 
     it "updates the current weather" do
-      weather_before = WeatherUpdate.current
-      allow(WeatherUpdate).to receive(:fetch).and_return(json_double)
-      WeatherUpdate.update
-      expect(WeatherUpdate.current).not_to eq(weather_before)
+      last_update = 1564323747
+      allow(subject).to receive(:last_update_time).and_return(last_update)
+      old_data = {"weather": [{"id": 200, "main": "Thunderstorm"}]}
+      allow(subject).to receive(:fetch).and_return(json_double)
+      subject.update
+      expect(subject.current).not_to eq(old_data)
     end
     
   end
