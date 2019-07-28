@@ -1,17 +1,31 @@
-require 'net/http'
-require 'json'
+module WeatherUpdate
 
-puts "Please enter your location:"
-location = gets.strip.capitalize
-url = "http://api.openweathermap.org/data/2.5/weather?q=#{location}&APPID=#{ENV["API_KEY"]}"
-uri = URI(url)
+  attr_reader :current, :location
+  
+  require 'net/http'
+  require 'json'
 
-loop do
-  response = Net::HTTP.get(uri)
-  weather_id = JSON.parse(response)["weather"][0]["id"]
-  weather = JSON.parse(response)["weather"][0]["main"]
-  File.write("weather.txt", weather_id)
-  puts "Weather updated (-> id: #{weather})"
-  minutes = 60 # (seconds)
-  sleep(1 * minutes)
+  def fetch
+    url = "http://api.openweathermap.org/data/2.5/weather?q=#{@location}&APPID=#{ENV["API_KEY"]}"
+    uri = URI(url)
+    return Net::HTTP.get(uri)
+  end
+
+  def parse
+    parsed = JSON.parse(fetch)
+    id = parsed["weather"][0]["id"]
+    main = parsed["weather"][0]["main"]
+    return {id: id, main: main}
+  end
+
+  def update
+    @last_update_time = Time.now.to_i
+    @current = parse(fetch) if time_since_update > 60
+  end
+  
+  private
+  def time_since_update
+    Time.now.to_i - @last_update_time
+  end
+
 end
