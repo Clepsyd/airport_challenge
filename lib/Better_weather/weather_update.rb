@@ -19,13 +19,14 @@ module WeatherUpdate
   end
 
   def update
+    @current = parse if cooldown_elapsed
     @last_update_time = Time.now.to_i
-    @current = parse(fetch) if time_since_update > 60
   end
   
   private
-  def time_since_update
-    Time.now.to_i - @last_update_time
+  def cooldown_elapsed
+    Time.now.to_i - @last_update_time > 60 if @last_update_time
+    true
   end
 
 end
