@@ -19,8 +19,10 @@ module WeatherUpdate
   end
 
   def update
-    @current = parse if cooldown_elapsed
-    @last_update_time = Time.now.to_i
+    if cooldown_elapsed
+      @current = parse 
+      @last_update_time = Time.now.to_i
+    end
   end
   
   private
