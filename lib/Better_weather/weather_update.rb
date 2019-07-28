@@ -15,7 +15,7 @@ module WeatherUpdate
     parsed = JSON.parse(fetch)
     id = parsed["weather"][0]["id"]
     main = parsed["weather"][0]["main"]
-    return {id: id, main: main}
+    return { id: id, main: main }
   end
 
   def update

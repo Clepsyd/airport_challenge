@@ -1,10 +1,10 @@
 require 'Better_weather/weather_update'
 
-class WeatherUpdate_container
+class WeatherUpdateContainer
   include WeatherUpdate
 end
 
-describe WeatherUpdate_container do
+describe WeatherUpdateContainer do
 
   it { is_expected.to respond_to(:current,
                                  :update,
@@ -26,7 +26,7 @@ describe WeatherUpdate_container do
 
     it "returns an id/weather pair" do
       allow(subject).to receive(:fetch).and_return(json_double)
-      expect(subject.parse).to eq({id: 500, main: "Rain"})
+      expect(subject.parse).to eq({ id: 500, main: "Rain" })
     end
 
   end
@@ -34,9 +34,9 @@ describe WeatherUpdate_container do
   describe "#update" do
 
     it "updates the current weather" do
-      last_update = 1564323747
+      last_update = 1_564_323_747
       allow(subject).to receive(:last_update_time).and_return(last_update)
-      old_data = {"weather": [{"id": 200, "main": "Thunderstorm"}]}
+      old_data = { "weather": [{ "id": 200, "main": "Thunderstorm" }] }
       allow(subject).to receive(:fetch).and_return(json_double)
       subject.update
       expect(subject.current).not_to eq(old_data)

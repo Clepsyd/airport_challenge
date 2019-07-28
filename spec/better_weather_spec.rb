@@ -2,8 +2,8 @@ require 'Better_weather/better_weather'
 
 describe BetterWeather do
 
-  let(:stormy_weather) { {id: 200, main: "Thunderstorm"} }
-  let(:sunny_weather) { {id: 800, main: "Clear"} }
+  let(:stormy_weather) { { id: 200, main: "Thunderstorm" } }
+  let(:sunny_weather) { { id: 800, main: "Clear" } }
 
   describe "#stormy?" do
 
