@@ -1,7 +1,7 @@
-require 'weather'
+require_relative './weather.rb'
 
 class Airport
-  attr_reader :tarmac, :capacity
+  attr_reader :tarmac, :capacity, :local_weather
 
   def initialize(weather_forecast = Weather.new, tarmac = [], capacity = 20)
     @tarmac = tarmac
