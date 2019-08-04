@@ -6,7 +6,7 @@ module WeatherUpdate
   require 'json'
 
   def fetch
-    url = "http://api.openweathermap.org/data/2.5/weather?q=#{@location}&APPID=#{ENV["API_KEY"]}"
+    url = "http://api.openweathermap.org/data/2.5/weather?q=#{@location}&APPID=#{ENV["WEATHERAPI_KEY"]}"
     uri = URI(url)
     return Net::HTTP.get(uri)
   end
